@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jokious - Random Joke Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+     <h1>Random Joke Generator</h1>
+      <div class="jokebox">
+         <div class="joketext" id="jokeDisplay">
+                Press "Get Joke" for a joke
+          </div>
+       </div>
+      <div class="buttonbox">
+          <ul>
+             <li><a href="#" onclick="fetchData()"><button class="b1">Get Joke</button></a></li>
+             <li><a href="#" onclick="clearJoke()"><button class="b2">Clear Joke</button></a></li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        async function fetchData() {
+            try {
+                let response = await fetch("https://v2.jokeapi.dev/joke/Any");
+                let data = await response.json();
+                let jokeDisplay = document.getElementById("jokeDisplay");
+                if (data.type === "single") {
+                     jokeDisplay.textContent = data.joke;
+                } else if (data.type === "twopart") { 
+                 jokeDisplay.textContent = data.setup + " - " + data.delivery;
+                }
+                if(countwords(joke) > 100){
+                    jokeDisplay.textContent = "This joke is too long (more than 100 words)."
+                }else{
+                    jokeDisplay.textContent = joke;
+                }
+            } catch (error) {
+                console.log("Error fetching joke:", error);
+            }
+        }
+        function clearJoke() {
+            document.getElementById("jokeDisplay").textContent = "Press 'Get Joke' for a joke";
+        }
+    </script>
+
+</body>
+
+</html>
